@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-mapping PUBLIC 
+"-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+<hibernate-mapping>
+
+  <class name="pl.test.enties.Klient" table="KLIENT">
+		<id name="id" column="ID_KLIENT" >
+			<generator class="identity"/>
+		</id>
+		<!-- <discriminator column="TYP_KLIENTA" type="string"/>  -->
+		<property name="imie" column="IMIE" />
+		<property name="nazwisko" column="NAZWISKO" />
+		
+		<set name="zamowienia" cascade="persist" inverse="true">
+			<key column="ID_KLIENT"/>
+			<one-to-many class="pl.test.enties.Zamowienie"/>
+		</set>
+	 
+		<set name="telefony" cascade="persist" table="TELEFON" order-by="NUMER DESC">
+			<key column="ID_KLIENT"/>
+			<one-to-many class="pl.test.enties.Telefon"/>
+		</set>
+		
+		<map name="numeryModele" cascade="persist" table="TELEFON" order-by="NUMER ASC">
+			<key column="ID_KLIENT"/>
+			<map-key column="NUMER" type="java.lang.String" />
+			<element column="MODEL" type="java.lang.String" />
+		</map>
+
+		<!-- 
+		<subclass name="pl.test.enties.KlientFirmowy" discriminator-value="FIRMA">
+			<property name="nazwaFirmy" column="NAZWA_FIRMY"/>
+			<property name="nip" column="NIP"/>
+		</subclass>
+			
+		<subclass name="pl.test.enties.KlientPrywatny" discriminator-value="PRYWATNY">
+			<property name="data_urodzenia" column="DATA_URODZENIA"/>
+		</subclass>
+ -->
+		<joined-subclass name="pl.test.enties.KlientZagraniczny" table="KLIENT_ZAGRANICZNY">
+			<key column="ID_KLIENT"/>
+			<property name="companyName" column="COMPANY_NAME"/>
+		</joined-subclass>	
+  </class>
+			
+  <class name="pl.test.enties.Zamowienie" table="ZAMOWIENIE">	
+  		<id name="id_zamowienie" column="ID_ZAMOWIENIE" >
+			<generator class="identity"/>
+		</id>
+		<property name="data" column="DATA" />
+		<property name="adres" column="ADRES" />
+		<many-to-one name="klient" column="ID_KLIENT" not-null="true"/>
+  </class>		
+
+  <class name="pl.test.enties.Telefon" table="TELEFON">
+	  	<id name="id_telefon" column="ID_TELEFON">
+	  		<generator class="identity"/>
+	  	</id>
+	  	<property name="numer" column="NUMER"/>
+	  	<property name="model" column="MODEL"/>
+	  	<many-to-one name="klient" column="ID_KLIENT" not-null="true"/>
+  </class>
+  
+</hibernate-mapping>
