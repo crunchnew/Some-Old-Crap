@@ -19,7 +19,13 @@ public class TestGit {
     System.out.println("MASTER");
 
     System.out.println("Test GitHub r2_index");
+  
     System.out.println("1.0");
+    
+    System.out.println("2.0");
+
   }
+  
+  
 
 }
