@@ -7,7 +7,7 @@ package pl.test.hib;
  * @author Primetals 2017 -- Wieslaw Czuber
  *
  */
-public class TestGit {
+public class TestGitr2new {
 
   /**
    * @param args
